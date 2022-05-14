@@ -22,49 +22,63 @@ function findCoordinate(cityNameEl){
             var lonCity=data[0].lon;
             searchAPI(latCity,lonCity);
         })
- }
+}
 
 
- function searchAPI(latCity, lonCity){
+function searchAPI(latCity, lonCity){
     var oneCallUrl= 'https://api.openweathermap.org/data/2.5/onecall?lat='+latCity+'&lon='+lonCity+'&appid='+myKey+'&units=imperial';
     console.log(oneCallUrl);
     fetch(oneCallUrl)
         .then(function(response){
             return response.json();
         })
+        
         .then(function(data){
             console.log(data);
-            var currentTemp= document.createElement('p');
-            currentTemp.innerHTML= data.current.temp;
-            var currentWind= document.createElement('p');
-            currentWind.innerHTML=data.current.wind_speed;
-            var currentHumidity=document.createElement('p');
-            currentHumidity.innerHTML=data.current.humidity;
-            var currentUV=document.createElement('p');
-            currentUV.innerHTML=data.current.uvi;
-            currentConditionEl.append(currentTemp,currentWind,currentHumidity,currentUV);
+            currentData(data);
 
-            for(var i=0;i<5;i++){
-                var futureTemp=document.createElement('p');
-                var futureWind=document.createElement('p');
-                var futureUV=document.createElement('p');
-                var futureHumidity=document.createElement('p');
-                var weatherCard=document.createElement('div');
-                weatherCard.classList.add('card');
-                var weatherContent=document.createElement('div');
-                weatherContent.classList.add('card-content');
-                futureTemp.innerHTML=data.daily[i].temp.day;
-                futureWind.innerHTML=data.daily[i].wind_speed;
-                futureHumidity.innerHTML=data.daily[i].humidity;
-                futureUV.innerHTML=data.daily[i].uvi;
-                weatherContent.append(futureTemp,futureWind,futureHumidity,futureUV);
-                weatherCard.append(weatherContent);
-                futureConditionEl.append(weatherCard);
+            for(var i=1;i<6;i++){
+                futureData(data.daily[i]);
             }
         })
      
- }
+}
 
+function currentData(data){
+    var currentTemp= document.createElement('p');
+    var currentWind= document.createElement('p');
+    var currentHumidity=document.createElement('p');
+    var currentUV=document.createElement('p');
+    
+    currentTemp.innerHTML= data.current.temp;
+    currentWind.innerHTML=data.current.wind_speed;
+    currentHumidity.innerHTML=data.current.humidity;
+    currentUV.innerHTML=data.current.uvi;
+    
+    currentConditionEl.append(currentTemp,currentWind,currentHumidity,currentUV);
+}
+
+function futureData(dailyData){
+    var futureTemp=document.createElement('p');
+    var futureWind=document.createElement('p');
+    var futureUV=document.createElement('p');
+    var futureHumidity=document.createElement('p');
+    
+    var weatherCard=document.createElement('div');
+    weatherCard.classList.add('card');
+    
+    var weatherContent=document.createElement('div');
+    weatherContent.classList.add('card-content');
+    
+    futureTemp.innerHTML=dailyData.temp.day;
+    futureWind.innerHTML=dailyData.wind_speed;
+    futureHumidity.innerHTML=dailyData.humidity;
+    futureUV.innerHTML=dailyData.uvi;
+    
+    weatherContent.append(futureTemp,futureWind,futureHumidity,futureUV);
+    weatherCard.append(weatherContent);
+    futureConditionEl.append(weatherCard);
+}
 /*function showResults(){
 
     var resultCard=document.createElement('div');

@@ -1,3 +1,10 @@
+aside{
+    flex:30%;
+}
+
+.conditions{
+    flex:70%;
+}
 .card {
     border: 1px solid #1a1a1a;
     margin-bottom: 1rem;
