@@ -1,5 +1,7 @@
 var searchCityEl= document.querySelector('#search-city');
 var searchButtonEl= document.querySelector('#search-button');
+var currentConditionEl=document.querySelector('#current-condition');
+var futureConditionEl=document.querySelector('#future-condition');
 //var cityNameEl="";
 var myKey= "efca7ff5dc8054e6d9ce1c4750e12c5f";
 
@@ -32,19 +34,32 @@ function findCoordinate(cityNameEl){
         })
         .then(function(data){
             console.log(data);
-            var currentTemp= data.current.temp;
-            var currentWind= data.current.wind_speed;
-            var currentHumidity=data.current.humidity;
-            var currentUV=data.current.uvi;
-            var futureTemp=[];
-            var futureWind=[];
-            var futureUV=[];
-            var futureHumidity=[];
+            var currentTemp= document.createElement('p');
+            currentTemp.innerHTML= data.current.temp;
+            var currentWind= document.createElement('p');
+            currentWind.innerHTML=data.current.wind_speed;
+            var currentHumidity=document.createElement('p');
+            currentHumidity.innerHTML=data.current.humidity;
+            var currentUV=document.createElement('p');
+            currentUV.innerHTML=data.current.uvi;
+            currentConditionEl.append(currentTemp,currentWind,currentHumidity,currentUV);
+
             for(var i=0;i<5;i++){
-                futureTemp[i]=data.daily[i].temp.day;
-                futureWind[i]=data.daily[i].wind_speed;
-                futureHumidity[i]=data.daily[i].humidity;
-                futureUV[i]=data.daily[i].uvi;
+                var futureTemp=document.createElement('p');
+                var futureWind=document.createElement('p');
+                var futureUV=document.createElement('p');
+                var futureHumidity=document.createElement('p');
+                var weatherCard=document.createElement('div');
+                weatherCard.classList.add('card');
+                var weatherContent=document.createElement('div');
+                weatherContent.classList.add('card-content');
+                futureTemp.innerHTML=data.daily[i].temp.day;
+                futureWind.innerHTML=data.daily[i].wind_speed;
+                futureHumidity.innerHTML=data.daily[i].humidity;
+                futureUV.innerHTML=data.daily[i].uvi;
+                weatherContent.append(futureTemp,futureWind,futureHumidity,futureUV);
+                weatherCard.append(weatherContent);
+                futureConditionEl.append(weatherCard);
             }
         })
      
