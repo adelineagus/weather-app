@@ -85,19 +85,22 @@ function currentData(data,cityName){
     var currentMonth= newDate.getMonth();
     var currentYear= newDate.getFullYear();
 
+    var currentIcon= document.createElement('img');
     var currentTitle= document.createElement('h2');
     var currentTemp= document.createElement('p');
     var currentWind= document.createElement('p');
     var currentHumidity=document.createElement('p');
     var currentUV=document.createElement('p');
+    console.log((data.current.weather[0].icon));
     
-    currentTitle.innerHTML=cityName + ' (' + currentMonth+ '/'+ currentDate + '/'+ currentYear + ')';
+    currentTitle.innerHTML=cityName + ' (' + currentMonth+ '/'+ currentDate + '/'+ currentYear + ') ';
+    currentIcon.src= 'https://openweathermap.org/img/wn/'+(data.current.weather[0].icon)+'@2x.png';
     currentTemp.innerHTML= 'Temp: '+ data.current.temp + ' \u00B0F';
     currentWind.innerHTML='Wind: '+ data.current.wind_speed + ' MPH';
     currentHumidity.innerHTML='Humidity: '+ data.current.humidity+ ' %' ;
     currentUV.innerHTML= 'UV Index: ' + data.current.uvi;
     
-    currentConditionEl.append(currentTitle, currentTemp,currentWind,currentHumidity,currentUV);
+    currentConditionEl.append(currentTitle, currentIcon, currentTemp,currentWind,currentHumidity,currentUV);
 }
 
 function futureData(dailyData){
@@ -107,6 +110,8 @@ function futureData(dailyData){
     var futureYear= newDate.getFullYear();
 
     var futureTitle= document.createElement('h2');
+    var futureIcon= document.createElement('img');
+
     var futureTemp=document.createElement('p');
     var futureWind=document.createElement('p');
     var futureUV=document.createElement('p');
@@ -119,12 +124,13 @@ function futureData(dailyData){
     weatherContent.classList.add('card-content');
     
     futureTitle.innerHTML= futureMonth+ '/'+ futureDate + '/'+ futureYear;
+    futureIcon.src= 'https://openweathermap.org/img/wn/'+(dailyData.weather[0].icon)+'@2x.png';
     futureTemp.innerHTML= 'Temp: '+ dailyData.temp.day + ' \u00B0F';
     futureWind.innerHTML='Wind: '+ dailyData.wind_speed + ' MPH';
     futureHumidity.innerHTML= 'Humidity: '+ dailyData.humidity+ ' %' ;
 
     
-    weatherContent.append(futureTitle, futureTemp,futureWind,futureHumidity,futureUV);
+    weatherContent.append(futureTitle, futureIcon, futureTemp,futureWind,futureHumidity,futureUV);
     weatherCard.append(weatherContent);
     futureConditionEl.append(weatherCard);
 }
