@@ -91,16 +91,36 @@ function currentData(data,cityName){
     var currentWind= document.createElement('p');
     var currentHumidity=document.createElement('p');
     var currentUV=document.createElement('p');
-    console.log((data.current.weather[0].icon));
-    
+    var currentuvTitle=document.createElement('p');
+    var currentuvAll=document.createElement('div');
+
+
     currentTitle.innerHTML=cityName + ' (' + currentMonth+ '/'+ currentDate + '/'+ currentYear + ') ';
     currentIcon.src= 'https://openweathermap.org/img/wn/'+(data.current.weather[0].icon)+'@2x.png';
     currentTemp.innerHTML= 'Temp: '+ data.current.temp + ' \u00B0F';
     currentWind.innerHTML='Wind: '+ data.current.wind_speed + ' MPH';
     currentHumidity.innerHTML='Humidity: '+ data.current.humidity+ ' %' ;
-    currentUV.innerHTML= 'UV Index: ' + data.current.uvi;
+    currentUV.innerHTML= data.current.uvi;
     
-    currentConditionEl.append(currentTitle, currentIcon, currentTemp,currentWind,currentHumidity,currentUV);
+
+    var setColor="";
+    if(data.current.uvi>=0 && data.current.uvi<=2){
+        setColor="green";
+    } else if(data.current.uvi>=3 && data.current.uvi<=5){
+        setColor="yellow";
+    }else if(data.current.uvi>=6 && data.current.uvi<=7){
+        setColor="orange";
+    } else if(data.current.uvi >=8 && data.current.uvi<=10){
+        setColor= "red";
+    } else{
+        setColor= "purple";
+    }
+    currentUV.style.backgroundColor= setColor;
+    currentuvTitle.innerHTML= 'UV Index: '
+    currentuvAll.append(currentuvTitle, currentUV);
+
+    
+    currentConditionEl.append(currentTitle, currentIcon, currentTemp,currentWind,currentHumidity,currentuvAll);
 }
 
 function futureData(dailyData){
@@ -114,7 +134,6 @@ function futureData(dailyData){
 
     var futureTemp=document.createElement('p');
     var futureWind=document.createElement('p');
-    var futureUV=document.createElement('p');
     var futureHumidity=document.createElement('p');
     
     var weatherCard=document.createElement('div');
@@ -130,7 +149,7 @@ function futureData(dailyData){
     futureHumidity.innerHTML= 'Humidity: '+ dailyData.humidity+ ' %' ;
 
     
-    weatherContent.append(futureTitle, futureIcon, futureTemp,futureWind,futureHumidity,futureUV);
+    weatherContent.append(futureTitle, futureIcon, futureTemp,futureWind,futureHumidity);
     weatherCard.append(weatherContent);
     futureConditionEl.append(weatherCard);
 }
