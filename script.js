@@ -15,7 +15,10 @@ searchButtonEl.addEventListener('click',function(event){
     var cityNameEl= document.querySelector("#city-name").value;
     findCoordinate(cityNameEl);
     var cityExist=0;
-    cityAll=JSON.parse(localStorage.getItem("cities"));
+    if(JSON.parse(localStorage.getItem("cities"))){
+        cityAll=JSON.parse(localStorage.getItem("cities"));
+    }
+    
     for(var i=0;i<cityAll.length;i++){
         if (cityAll[i]==cityNameEl){
             cityExist++;
