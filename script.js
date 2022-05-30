@@ -6,7 +6,10 @@ var futureConditionEl=document.querySelector('#future-condition');
 var cityAll=[];
 var myKey= "efca7ff5dc8054e6d9ce1c4750e12c5f";
 
-getCity();
+if(JSON.parse(localStorage.getItem("cities"))){
+    getCity();
+}
+
 searchButtonEl.addEventListener('click',function(event){
     event.preventDefault();
     var cityNameEl= document.querySelector("#city-name").value;
