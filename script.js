@@ -6,11 +6,13 @@ var futureConditionEl=document.querySelector('#future-condition');
 var cityAll=[];
 var myKey= "efca7ff5dc8054e6d9ce1c4750e12c5f";
 
+getCity();
 searchButtonEl.addEventListener('click',function(event){
     event.preventDefault();
     var cityNameEl= document.querySelector("#city-name").value;
     findCoordinate(cityNameEl);
     var cityExist=0;
+    cityAll=JSON.parse(localStorage.getItem("cities"));
     for(var i=0;i<cityAll.length;i++){
         if (cityAll[i]==cityNameEl){
             cityExist++;
@@ -164,14 +166,3 @@ function futureData(dailyData){
     futureConditionEl.append(weatherCard);
     futureConditionEl.style.display="flex";
 }
-
-/*function showResults(){
-
-    var resultCard=document.createElement('div');
-    var futureTempEl= document.createElement('p');
-    futureTempEl.textContent=futureTemp;
- }*/
-
-//http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
-//https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
-//'https://api.openweathermap.org/data/2.5/weather?q=Seattle&appid=efca7ff5dc8054e6d9ce1c4750e12c5f";
