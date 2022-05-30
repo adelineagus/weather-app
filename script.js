@@ -34,6 +34,7 @@ function getCity(cityButton){
         var cityButton= document.createElement('button');
         cityButton.textContent=cityStored[i];
         cityButton.setAttribute("city",cityStored[i]);
+        cityButton.setAttribute("style", "width:100%; background-color:gray");
         historySectionEl.append(cityButton);
         
         cityButton.addEventListener('click', function(event){
@@ -72,6 +73,8 @@ function searchAPI(latCity, lonCity,cityName){
             currentData(data,cityName);
 
             futureConditionEl.textContent='';
+            //var futureconditionTitle=document.createElement('h3')
+
             for(var i=1;i<6;i++){
                 futureData(data.daily[i]);
             }
@@ -85,6 +88,7 @@ function currentData(data,cityName){
     var currentMonth= newDate.getMonth();
     var currentYear= newDate.getFullYear();
 
+    var currentconditionTitle=document.createElement('div');
     var currentIcon= document.createElement('img');
     var currentTitle= document.createElement('h2');
     var currentTemp= document.createElement('p');
@@ -97,6 +101,8 @@ function currentData(data,cityName){
 
     currentTitle.innerHTML=cityName + ' (' + currentMonth+ '/'+ currentDate + '/'+ currentYear + ') ';
     currentIcon.src= 'https://openweathermap.org/img/wn/'+(data.current.weather[0].icon)+'@2x.png';
+    currentconditionTitle.append(currentTitle, currentIcon);
+
     currentTemp.innerHTML= 'Temp: '+ data.current.temp + ' \u00B0F';
     currentWind.innerHTML='Wind: '+ data.current.wind_speed + ' MPH';
     currentHumidity.innerHTML='Humidity: '+ data.current.humidity+ ' %' ;
@@ -104,23 +110,27 @@ function currentData(data,cityName){
     
 
     var setColor="";
-    if(data.current.uvi>=0 && data.current.uvi<=2){
+    if(data.current.uvi>=0 && data.current.uvi<=3){
         setColor="green";
-    } else if(data.current.uvi>=3 && data.current.uvi<=5){
+    } else if(data.current.uvi>=3 && data.current.uvi<=6){
         setColor="yellow";
-    }else if(data.current.uvi>=6 && data.current.uvi<=7){
+    }else if(data.current.uvi>=6 && data.current.uvi<=8){
         setColor="orange";
-    } else if(data.current.uvi >=8 && data.current.uvi<=10){
+    } else if(data.current.uvi >=8 && data.current.uvi<=11){
         setColor= "red";
     } else{
         setColor= "purple";
     }
+
     currentUV.style.backgroundColor= setColor;
-    currentuvTitle.innerHTML= 'UV Index: '
+    currentUV.style.display="inline-block";
+    currentuvTitle.innerHTML= 'UV Index:  '
+    currentuvTitle.style.display="inline-block";
     currentuvAll.append(currentuvTitle, currentUV);
 
     
-    currentConditionEl.append(currentTitle, currentIcon, currentTemp,currentWind,currentHumidity,currentuvAll);
+    currentConditionEl.append(currentconditionTitle, currentTemp,currentWind,currentHumidity,currentuvAll);
+    currentConditionEl.setAttribute("style", "border: solid; padding:10px; margin-left:20px");
 }
 
 function futureData(dailyData){
@@ -152,6 +162,7 @@ function futureData(dailyData){
     weatherContent.append(futureTitle, futureIcon, futureTemp,futureWind,futureHumidity);
     weatherCard.append(weatherContent);
     futureConditionEl.append(weatherCard);
+    futureConditionEl.style.display="flex";
 }
 
 /*function showResults(){

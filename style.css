@@ -1,17 +1,60 @@
-aside{
-    flex:30%;
+header{
+    text-align:center;
+    background-color:blue;
+    font-weight:bold;
 }
 
-.conditions{
-    flex:70%;
+main{
+    display:flex;
+    flex:100%;
 }
+aside{
+    flex:20%;
+}
+
+.btn.btn-block {
+    width: 100%;
+    display: block;
+    text-align: center;
+    color:white;
+    background-color:blue;
+    font-size: 20px;
+  }
+
+#search-city{
+    width:100%;
+    border-bottom:solid;
+    padding-bottom:10px;
+}
+
+#city-name{
+    width:100%;
+}
+
+p {
+    font-size: 1.1rem;
+    margin: 0 0 1rem;
+    line-height: 1.5;
+}
+.conditions{
+    flex:80%;
+}
+
+/*#current-condition{
+    border-style: solid;
+}*/
 .card {
     border: 1px solid #1a1a1a;
-    margin-bottom: 1rem;
+    margin:20px;
     display:inline-block;
     padding: 15px;
+    background-color:darkblue;
+    color:white;
+    display:flex;
+    flex:auto;
   }
 
 .card .card-body {
     padding: 0.375rem;
 }
+
