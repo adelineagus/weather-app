@@ -18,7 +18,7 @@ searchButtonEl.addEventListener('click',function(event){
     if(JSON.parse(localStorage.getItem("cities"))){
         cityAll=JSON.parse(localStorage.getItem("cities"));
     }
-    
+
     for(var i=0;i<cityAll.length;i++){
         if (cityAll[i]==cityNameEl){
             cityExist++;
@@ -54,7 +54,7 @@ function getCity(cityButton){
 }
 
 function findCoordinate(cityName){
-    var coordinateUrl= 'http://api.openweathermap.org/geo/1.0/direct?q='+cityName+'&limit='+ 1 +'&appid='+myKey;
+    var coordinateUrl= 'https://api.openweathermap.org/geo/1.0/direct?q='+cityName+'&limit='+ 1 +'&appid='+myKey;
     fetch (coordinateUrl)
         .then(function(response){
             return response.json();
