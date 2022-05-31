@@ -8,6 +8,7 @@ var futureConditionEl=document.querySelector('#future-condition');
 var cityAll=[];
 var myKey= "efca7ff5dc8054e6d9ce1c4750e12c5f";
 
+//check to see whether there are data stored in local storage when starting page/refreshing page
 if(JSON.parse(localStorage.getItem("cities"))){
     getCity();
 }
@@ -15,37 +16,56 @@ if(JSON.parse(localStorage.getItem("cities"))){
 searchButtonEl.addEventListener('click',function(event){
     event.preventDefault();
     var cityNameEl= document.querySelector("#city-name").value;
+
+    //if there's no input on textbox, just exit this whole function
     if (!cityNameEl){
         return;
     }
-    
-    findCoordinate(cityNameEl);
 
+    generateResults(cityNameEl);
     var cityExist=0;
+    pushInput(cityNameEl,cityExist);
+    getCity();
+
+    //reset input
+    document.querySelector("#city-name").value='';
+})
+
+
+//push input from user as necessary and save to local storage
+function pushInput(cityNameEl,cityExist){
+    
+    //if storage contains data, grab the data
     if(JSON.parse(localStorage.getItem("cities"))){
         cityAll=JSON.parse(localStorage.getItem("cities"));
     }
 
+    //if city input equals to city name included in storage data, add amount of variable cityExist
     for(var i=0;i<cityAll.length;i++){
         if (cityAll[i]==cityNameEl){
             cityExist++;
         }
     }
+    
+    //if cityExist variable is zero, push cityNameEl/input to storage
+        //if cityExist variable is not zero, do not push input to storage --> avoid duplication
     if (cityExist==0){
         cityAll.push(cityNameEl);
     }
     localStorage.setItem("cities",JSON.stringify(cityAll));
-    getCity();
-    document.querySelector("#city-name").value='';
-})
+}
 
 
-function getCity(cityButton){
+// generating city buttons from storage to be presented on history section
+function getCity(){
     var cityStored=JSON.parse(localStorage.getItem("cities"));
+
+    //remove all button from history section
     while (historySectionEl.firstChild){
         historySectionEl.removeChild(historySectionEl.firstChild);
     }
 
+    //recreate buttons based on storage 
     for(var i=0;i<cityStored.length;i++){
         var cityButton= document.createElement('button');
         cityButton.textContent=cityStored[i];
@@ -55,15 +75,14 @@ function getCity(cityButton){
         
         cityButton.addEventListener('click', function(event){
             var clickedCity=event.target;
-            console.log(clickedCity.getAttribute("city"));
-            findCoordinate(clickedCity.getAttribute("city"));
+            generateResults(clickedCity.getAttribute("city"));
         })
     }
 }
 
-function findCoordinate(cityName){
+//grab coordinates and generate all results
+function generateResults(cityName){
     var coordinateUrl= 'https://api.openweathermap.org/geo/1.0/direct?q='+cityName+'&limit='+ 1 +'&appid='+myKey;
-    console.log(coordinateUrl);
     fetch (coordinateUrl)
         .then(function(response){
             return response.json();
@@ -75,36 +94,31 @@ function findCoordinate(cityName){
         })
 }
 
-
+// get current and future data from one call api by taking latitude and longtitude
 function searchAPI(latCity, lonCity,cityName){
     var oneCallUrl= 'https://api.openweathermap.org/data/2.5/onecall?lat='+latCity+'&lon='+lonCity+'&appid='+myKey+'&units=imperial';
-    console.log(oneCallUrl);
     fetch(oneCallUrl)
         .then(function(response){
             return response.json();
         })
 
         .then(function(data){
-            console.log(data);
             currentConditionEl.textContent='';
             currentData(data,cityName);
 
             futureTitle.innerHTML= "5-Day Forecast:";
             futureConditionEl.textContent='';
-
             for(var i=1;i<6;i++){
                 futureData(data.daily[i]);
             }
         })
-     
 }
 
+//set up results for current condition
 function currentData(data,cityName){
     var newDate= new Date(data.current.dt * 1000);
-    console.log(newDate);
     var currentDate= newDate.getDate();
     var currentMonth= newDate.getMonth()+1;
-    console.log(currentMonth);
     var currentYear= newDate.getFullYear();
 
     var currentconditionTitle=document.createElement('div');
@@ -117,7 +131,6 @@ function currentData(data,cityName){
     var currentuvTitle=document.createElement('p');
     var currentuvAll=document.createElement('div');
 
-
     currentTitle.innerHTML=cityName + ' (' + currentMonth+ '/'+ currentDate + '/'+ currentYear + ') ';
     currentIcon.src= 'https://openweathermap.org/img/wn/'+(data.current.weather[0].icon)+'@2x.png';
     currentconditionTitle.append(currentTitle, currentIcon);
@@ -128,19 +141,7 @@ function currentData(data,cityName){
     currentHumidity.innerHTML='Humidity: '+ data.current.humidity+ ' %' ;
     currentUV.innerHTML= data.current.uvi;
     
-
-    var setColor="";
-    if(data.current.uvi>=0 && data.current.uvi<=3){
-        setColor="green";
-    } else if(data.current.uvi>=3 && data.current.uvi<=6){
-        setColor="yellow";
-    }else if(data.current.uvi>=6 && data.current.uvi<=8){
-        setColor="orange";
-    } else if(data.current.uvi >=8 && data.current.uvi<=11){
-        setColor= "red";
-    } else{
-        setColor= "purple";
-    }
+    var setColor= uvColor(data.current.uvi);
 
     currentUV.style.backgroundColor= setColor;
     currentUV.style.display="inline-block";
@@ -148,11 +149,26 @@ function currentData(data,cityName){
     currentuvTitle.style.display="inline-block";
     currentuvAll.append(currentuvTitle, currentUV);
 
-    
     currentConditionEl.append(currentconditionTitle, currentTemp,currentWind,currentHumidity,currentuvAll);
     currentConditionEl.setAttribute("style", "border: solid; padding:10px; margin-left:20px");
 }
 
+//setting uv color 
+function uvColor(datacurrentUVI){
+    if(datacurrentUVI>=0 && datacurrentUVI<=3){
+        return "green";
+    }else if(datacurrentUVI>=3 && datacurrentUVI<=6){
+        return "yellow";
+    }else if(datacurrentUVI>=6 && datacurrentUVI<=8){
+        return "orange";
+    } else if(datacurrentUVI >=8 && datacurrentUVI<=11){
+        return "red";
+    } else{
+        return "purple";
+    }
+}
+
+//setup results for future conditions
 function futureData(dailyData){
     var newDate= new Date(dailyData.dt * 1000);
     var futureDate= newDate.getDate();
@@ -169,7 +185,6 @@ function futureData(dailyData){
     weatherCard.classList.add('card');
     
     var weatherContent=document.createElement('div');
-    //weatherContent.classList.add('card-content');
     
     futureTitle.innerHTML= futureMonth+ '/'+ futureDate + '/'+ futureYear;
     futureIcon.src= 'https://openweathermap.org/img/wn/'+(dailyData.weather[0].icon)+'@2x.png';
