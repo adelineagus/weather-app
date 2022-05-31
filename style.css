@@ -47,7 +47,15 @@ p {
     flex:80%;
 }
 
-h3{
+h2{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center
+}
+#future-title{
+    font-weight:bold;
+    font-size:20px;
     margin-left:20px;
     margin-bottom:0px;
 }

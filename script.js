@@ -2,7 +2,9 @@ var searchCityEl= document.querySelector('#search-city');
 var searchButtonEl= document.querySelector('#search-button');
 var historySectionEl=document.querySelector('#history-section');
 var currentConditionEl=document.querySelector('#current-condition');
+var futureTitle=document.querySelector('#future-title');
 var futureConditionEl=document.querySelector('#future-condition');
+
 var cityAll=[];
 var myKey= "efca7ff5dc8054e6d9ce1c4750e12c5f";
 
@@ -80,8 +82,8 @@ function searchAPI(latCity, lonCity,cityName){
             currentConditionEl.textContent='';
             currentData(data,cityName);
 
+            futureTitle.innerHTML= "5-Day Forecast:";
             futureConditionEl.textContent='';
-            //var futureconditionTitle=document.createElement('h3')
 
             for(var i=1;i<6;i++){
                 futureData(data.daily[i]);
@@ -92,8 +94,10 @@ function searchAPI(latCity, lonCity,cityName){
 
 function currentData(data,cityName){
     var newDate= new Date(data.current.dt * 1000);
+    console.log(newDate);
     var currentDate= newDate.getDate();
-    var currentMonth= newDate.getMonth();
+    var currentMonth= newDate.getMonth()+1;
+    console.log(currentMonth);
     var currentYear= newDate.getFullYear();
 
     var currentconditionTitle=document.createElement('div');
@@ -110,6 +114,7 @@ function currentData(data,cityName){
     currentTitle.innerHTML=cityName + ' (' + currentMonth+ '/'+ currentDate + '/'+ currentYear + ') ';
     currentIcon.src= 'https://openweathermap.org/img/wn/'+(data.current.weather[0].icon)+'@2x.png';
     currentconditionTitle.append(currentTitle, currentIcon);
+    currentconditionTitle.style.display="flex";
 
     currentTemp.innerHTML= 'Temp: '+ data.current.temp + ' \u00B0F';
     currentWind.innerHTML='Wind: '+ data.current.wind_speed + ' MPH';
@@ -144,21 +149,20 @@ function currentData(data,cityName){
 function futureData(dailyData){
     var newDate= new Date(dailyData.dt * 1000);
     var futureDate= newDate.getDate();
-    var futureMonth= newDate.getMonth();
+    var futureMonth= newDate.getMonth()+1;
     var futureYear= newDate.getFullYear();
 
-    var futureTitle= document.createElement('h2');
+    var futureTitle= document.createElement('h3');
     var futureIcon= document.createElement('img');
 
     var futureTemp=document.createElement('p');
     var futureWind=document.createElement('p');
     var futureHumidity=document.createElement('p');
-    
     var weatherCard=document.createElement('div');
     weatherCard.classList.add('card');
     
     var weatherContent=document.createElement('div');
-    weatherContent.classList.add('card-content');
+    //weatherContent.classList.add('card-content');
     
     futureTitle.innerHTML= futureMonth+ '/'+ futureDate + '/'+ futureYear;
     futureIcon.src= 'https://openweathermap.org/img/wn/'+(dailyData.weather[0].icon)+'@2x.png';
