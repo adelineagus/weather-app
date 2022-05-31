@@ -4,19 +4,30 @@
 }
 
 header{
-    text-align:center;
+    justify-content:center;
     background-color:blue;
     font-weight:bold;
     margin-bottom:20px;
     padding:20px;
+    color: white;
+    display:flex;
 }
 
+h1{
+    margin-bottom:10px;
+}
+
+input{
+    font-size:20px;
+    margin-bottom:10px;
+}
 main{
     display:flex;
     flex:100%;
 }
 aside{
     flex:20%;
+    margin-left:10px;
 }
 
 #search-button{
@@ -32,6 +43,7 @@ aside{
     width:100%;
     border-bottom:solid;
     padding-bottom:10px;
+    margin-bottom:20px;
 }
 
 #city-name{
@@ -53,11 +65,14 @@ h2{
     align-items: center;
     justify-content: center
 }
+
+
 #future-title{
     font-weight:bold;
     font-size:20px;
     margin-left:20px;
     margin-bottom:0px;
+    display:flex;
 }
 
 .card {

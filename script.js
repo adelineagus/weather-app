@@ -15,7 +15,12 @@ if(JSON.parse(localStorage.getItem("cities"))){
 searchButtonEl.addEventListener('click',function(event){
     event.preventDefault();
     var cityNameEl= document.querySelector("#city-name").value;
+    if (!cityNameEl){
+        return;
+    }
+    
     findCoordinate(cityNameEl);
+
     var cityExist=0;
     if(JSON.parse(localStorage.getItem("cities"))){
         cityAll=JSON.parse(localStorage.getItem("cities"));
@@ -31,6 +36,7 @@ searchButtonEl.addEventListener('click',function(event){
     }
     localStorage.setItem("cities",JSON.stringify(cityAll));
     getCity();
+    document.querySelector("#city-name").value='';
 })
 
 
@@ -44,7 +50,7 @@ function getCity(cityButton){
         var cityButton= document.createElement('button');
         cityButton.textContent=cityStored[i];
         cityButton.setAttribute("city",cityStored[i]);
-        cityButton.setAttribute("style", "width:100%; background-color:gray");
+        cityButton.setAttribute("style", "font-size:15px; width:100%; background-color:gray; margin-bottom:10px");
         historySectionEl.append(cityButton);
         
         cityButton.addEventListener('click', function(event){
@@ -57,6 +63,7 @@ function getCity(cityButton){
 
 function findCoordinate(cityName){
     var coordinateUrl= 'https://api.openweathermap.org/geo/1.0/direct?q='+cityName+'&limit='+ 1 +'&appid='+myKey;
+    console.log(coordinateUrl);
     fetch (coordinateUrl)
         .then(function(response){
             return response.json();
