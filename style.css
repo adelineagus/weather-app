@@ -1,7 +1,14 @@
+* {
+    margin:0;
+    box-sizing: border-box;
+}
+
 header{
     text-align:center;
     background-color:blue;
     font-weight:bold;
+    margin-bottom:20px;
+    padding:20px;
 }
 
 main{
@@ -40,9 +47,11 @@ p {
     flex:80%;
 }
 
-/*#current-condition{
-    border-style: solid;
-}*/
+h3{
+    margin-left:20px;
+    margin-bottom:0px;
+}
+
 .card {
     border: 1px solid #1a1a1a;
     margin:20px;
@@ -54,7 +63,4 @@ p {
     flex:auto;
   }
 
-.card .card-body {
-    padding: 0.375rem;
-}
 
